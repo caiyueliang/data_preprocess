@@ -378,6 +378,7 @@ def parse_argvs():
     parser.add_argument("--sign_type", dest="sign_type", type=str, default="things",
                         choices=["things", "flag", "ocr", "face"])
     parser.add_argument("--root_path", dest="root_path", type=str, default="../Data/AI比赛/特定物品识别/images_100/")
+    parser.add_argument("--process_all", dest="process_all", type=bool, default=False)
     args = parser.parse_args()
     print(args)
     # logger.warning(args)
@@ -390,4 +391,4 @@ if __name__ == '__main__':
     # show_images(root_path="../Data/yolo/yolo_data_new_1/car_detect_train/")
 
     sign_label = SignLabel(args.sign_type)
-    sign_label.sign_images(root_path=args.root_path, process_all=False)
+    sign_label.sign_images(root_path=args.root_path, process_all=args.process_all)
