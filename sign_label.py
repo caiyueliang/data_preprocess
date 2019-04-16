@@ -93,53 +93,54 @@ class SignLabel:
                 self.show_classes()
 
     # ============================================================================================================
-    def show_image(self, image_file):
-        label_file = image_file.replace('.jpg', '.txt').replace('.jpeg', '.txt').replace('.png', '.txt')
-        print(image_file)
-        print(label_file)
-
-        image = cv2.imread(image_file)
-        h, w, c = image.shape
-        print('(h, w, c): (%d, %d, %d)' % (h, w, c))
-
-        with open(label_file, 'r') as file:
-            label_list = file.readlines()
-
-        for label in label_list:
-            temp_list = label.rstrip().split(' ')
-            x1 = float(temp_list[1]) * w - (float(temp_list[3]) * w / 2)
-            y1 = float(temp_list[2]) * h - (float(temp_list[4]) * h / 2)
-
-            x2 = float(temp_list[1]) * w + (float(temp_list[3]) * w / 2)
-            y2 = float(temp_list[2]) * h + (float(temp_list[4]) * h / 2)
-
-            if int(temp_list[0]) == 0:
-                cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-            elif int(temp_list[0]) == 1:
-                cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 255), 2)
-
-        cv2.imshow('show_image', image)
-        cv2.waitKey(0)
-
-    def show_images(self, root_path):
-        for root, dirs, files in os.walk(root_path):
-            for file in files:
-                if '.txt' not in file:
-                    self.show_image(os.path.join(root, file))
+    # def show_image(self, image_file):
+    #     label_file = image_file.replace('.jpg', '.txt').replace('.jpeg', '.txt').replace('.png', '.txt')
+    #     print(image_file)
+    #     print(label_file)
+    #
+    #     image = cv2.imread(image_file)
+    #     h, w, c = image.shape
+    #     print('(h, w, c): (%d, %d, %d)' % (h, w, c))
+    #
+    #     with open(label_file, 'r') as file:
+    #         label_list = file.readlines()
+    #
+    #     for label in label_list:
+    #         temp_list = label.rstrip().split(' ')
+    #         x1 = float(temp_list[1]) * w - (float(temp_list[3]) * w / 2)
+    #         y1 = float(temp_list[2]) * h - (float(temp_list[4]) * h / 2)
+    #
+    #         x2 = float(temp_list[1]) * w + (float(temp_list[3]) * w / 2)
+    #         y2 = float(temp_list[2]) * h + (float(temp_list[4]) * h / 2)
+    #
+    #         if int(temp_list[0]) == 0:
+    #             cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+    #         elif int(temp_list[0]) == 1:
+    #             cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 255), 2)
+    #
+    #     cv2.imshow('show_image', image)
+    #     cv2.waitKey(0)
+    #
+    # def show_images(self, root_path):
+    #     for root, dirs, files in os.walk(root_path):
+    #         for file in files:
+    #             if '.txt' not in file:
+    #                 self.show_image(os.path.join(root, file))
 
     # ============================================================================================================
-    def draw_rectangle(self, image, label_list):
+    def draw_rectangle(self, image, label_list, times=1):
         print('本张图所有标记信息：')
         for index, label in enumerate(label_list):
             print('index: %d 详细信息: %s' % (index + 1, label))
             a = 765 / len(self.class_list) * int(label["class"])
             if a <= 255:
-                color = (a , 0, 0)
+                color = (a, 0, 0)
             elif a <= 510:
                 color = (255, a - 255, 0)
             else:
                 color = (255, 255, a - 510)
-            cv2.rectangle(image, (label["points"][0], label["points"][1]), (label["points"][2], label["points"][3]), color, 2)
+            cv2.rectangle(image, (int(label["points"][0]*times), int(label["points"][1]*times)),
+                          (int(label["points"][2]*times), int(label["points"][3]*times)), color, 2)
         self.show_action()
         return image
 
@@ -171,14 +172,18 @@ class SignLabel:
         print('[Enter] 如果要删除该图片中的某个标记框，用： shift + 数字（如 shift + 1表示删除第0个框）')
 
     def sign_image(self, image_file, label_file):
+        times = 1
+
         print(image_file)
         print(label_file)
 
         cv2.namedWindow('sign_image')
         cv2.setMouseCallback('sign_image', self.mouse_click_events)    # 鼠标事件绑定
 
-        image = cv2.imread(image_file)
-        h, w, c = image.shape
+        base_image = cv2.imread(image_file)
+        h, w, c = base_image.shape
+        image = base_image.copy()
+
         print('(h, w, c): (%d, %d, %d)' % (h, w, c))
 
         if os.path.exists(label_file):
@@ -201,7 +206,7 @@ class SignLabel:
             label_list[-1]["class"] = temp_list[0]
             label_list[-1]["points"] = (int(x1), int(y1), int(x2), int(y2))
 
-        self.draw_image = self.draw_rectangle(image.copy(), label_list)
+        self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
 
         class_num = 0
 
@@ -226,10 +231,10 @@ class SignLabel:
                         print('[append] 本次标记信息 %d: %s ...' % (class_num, self.class_list[class_num]))
                         label_list.append(dict())
                         label_list[-1]["class"] = str(class_num)
-                        label_list[-1]["points"] = (self.car_points[0][0], self.car_points[0][1],
-                                                    self.car_points[1][0], self.car_points[1][1])
+                        label_list[-1]["points"] = (int(self.car_points[0][0]/times), int(self.car_points[0][1]/times),
+                                                    int(self.car_points[1][0]/times), int(self.car_points[1][1]/times))
                         self.car_points = []
-                        self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                        self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                         class_num = 0
                     else:
                         print('[append] fail: %s' % self.car_points)
@@ -256,17 +261,33 @@ class SignLabel:
                 #         label_list[-1]["points"] = (self.car_points[0][0], self.car_points[0][1],
                 #                                     self.car_points[1][0], self.car_points[1][1])
                 #         self.car_points = []
-                #         self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                #         self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 #         self.show_action()
                 #     else:
                 #         print('[append] fail: %s' % self.car_points)
+
+                if k == ord('c'):
+                    print('=================================================================')
+                    print('改变图片尺寸 ...')
+                    if times == 2:
+                        times = 0.5
+                    elif times == 1:
+                        times = 2
+                    else:
+                        times = 1
+                    image = cv2.resize(base_image, (int(base_image.shape[1]*times), int(base_image.shape[0]*times)))
+                    print(times, image.shape)
+
+                    self.car_points = []
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
+                    cv2.imshow('sign_image', self.draw_image)
 
                 # 重新加载图片
                 if k == ord('r'):
                     print('=================================================================')
                     print('resign ...')
                     self.car_points = []
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
 
                 # 保存，显示下一张
                 if k == ord('s'):
@@ -289,7 +310,6 @@ class SignLabel:
                         os.remove(image_file)
                     if os.path.exists(label_file):
                         os.remove(label_file)
-
                     break
 
                 # 删除标记框
@@ -297,37 +317,37 @@ class SignLabel:
                     print('=================================================================')
                     object = label_list.pop(0)
                     print('[delete] ...index: 1; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 if k == ord('@'):
                     print('=================================================================')
                     object = label_list.pop(1)
                     print('[delete] ...index: 2; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 if k == ord('#'):
                     print('=================================================================')
                     object = label_list.pop(2)
                     print('[delete] ...index: 3; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 if k == ord('$'):
                     print('=================================================================')
                     object = label_list.pop(3)
                     print('[delete] ...index: 4; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 if k == ord('%'):
                     print('=================================================================')
                     object = label_list.pop(4)
                     print('[delete] ...index: 5; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 if k == ord('^'):
                     print('=================================================================')
                     object = label_list.pop(5)
                     print('[delete] ...index: 6; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
                 if k == ord('&'):
                     print('=================================================================')
                     object = label_list.pop(6)
                     print('[delete] ...index: 7; label: %s' % object)
-                    self.draw_image = self.draw_rectangle(image.copy(), label_list)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
 
             except Exception:
                 msg = traceback.format_exc()
