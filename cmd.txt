@@ -1,0 +1,20 @@
+预处理（从每个类中拷贝100张图片到特定目录，用于一次数据标记）
+python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/images/" --output_path="../Data/AI比赛/特定物品识别/images_100/" --count=100
+python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/images/" --output_path="../Data/AI比赛/特定物品识别/images_100/" --count=300
+
+python pre_process.py --func=2 --root_path="../Data/AI比赛/国旗识别/images/" --output_path="../Data/AI比赛/国旗识别/images_100/" --count=100
+
+python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/images/" --output_path="../Data/AI比赛/特定物品识别/images_300/" --count=300
+
+数据标记
+python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/"
+python sign_label.py --sign_type="flag" --root_path="../Data/AI比赛/国旗识别/images_100/"
+
+拆分成训练集和测试集
+python pre_process.py --func=1 --root_path="../Data/AI比赛/特定物品识别/images_100/" --output_path="../Data/AI比赛/特定物品识别/images_train/" --count=10
+
+生成image_path.txt
+python pre_process.py --func=3 --root_path="../Data/AI比赛/特定物品识别/images_300/"
+
+
+
