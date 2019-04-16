@@ -5,11 +5,11 @@ import time
 import shutil
 import subprocess
 import traceback
-from logging import getLogger
+# from logging import getLogger
 from argparse import ArgumentParser
 
 
-logger = getLogger()
+# logger = getLogger()
 # ['EVENT_FLAG_ALTKEY', 'EVENT_FLAG_CTRLKEY', 'EVENT_FLAG_LBUTTON', 'EVENT_FLAG_MBUTTON', 'EVENT_FLAG_RBUTTON',
 # 'EVENT_FLAG_SHIFTKEY', 'EVENT_LBUTTONDBLCLK', 'EVENT_LBUTTONDOWN', 'EVENT_LBUTTONUP', 'EVENT_MBUTTONDBLCLK',
 # 'EVENT_MBUTTONDOWN', 'EVENT_MBUTTONUP', 'EVENT_MOUSEHWHEEL', 'EVENT_MOUSEMOVE', 'EVENT_MOUSEWHEEL',
@@ -357,9 +357,10 @@ def parse_argvs():
     parser = ArgumentParser(description='sign label')
     parser.add_argument("--sign_type", dest="sign_type", type=str, default="things",
                         choices=["things", "flag", "ocr", "face"])
-    parser.add_argument("--root_path", dest="root_path", type=str, default="../Data/AI比赛/特定物品识别/images/")
+    parser.add_argument("--root_path", dest="root_path", type=str, default="../Data/AI比赛/特定物品识别/images_100/")
     args = parser.parse_args()
-    logger.warning(args)
+    print(args)
+    # logger.warning(args)
     return args
 
 

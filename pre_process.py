@@ -2,11 +2,11 @@
 import os
 import shutil
 import random
-from logging import getLogger
+# from logging import getLogger
 from argparse import ArgumentParser
 
 
-logger = getLogger()
+# logger = getLogger()
 
 
 def mkdir_if_not_exist(path):
@@ -143,7 +143,8 @@ def parse_argvs():
     parser.add_argument("--output_path", dest="output_path", type=str, default="../Data/AI比赛/特定物品识别/images_100/")
     parser.add_argument("--count", dest="count", type=int, default=100)
     args = parser.parse_args()
-    logger.warning(args)
+    print(args)
+    # logger.warning(args)
     return args
 
 
