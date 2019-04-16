@@ -133,13 +133,23 @@ class SignLabel:
         print('本张图所有标记信息：')
         for index, label in enumerate(label_list):
             print('index: %d 详细信息: %s' % (index + 1, label))
-            a = 765 / len(self.class_list) * int(label["class"])
-            if a <= 255:
-                color = (a, 0, 0)
-            elif a <= 510:
-                color = (255, a - 255, 0)
+            a = 765 / len(self.class_list)
+            b = int(label["class"]) / 3
+            c = int(label["class"]) % 3
+            print(a, b, c)
+            if c == 0:
+                color = (255 - a * b, a * b, a * b)
+            elif c == 1:
+                color = (255 - a * (b+1), 255 - a * b, a * b)
             else:
-                color = (255, 255, a - 510)
+                color = (255 - a * (b+1), 255 - a * (b+1), 255 - a * b)
+            print(color)
+            # if a <= 255:
+            #     color = (a, 0, 0)
+            # elif a <= 510:
+            #     color = (255, a - 255, 0)
+            # else:
+            #     color = (255, 255, a - 510)
             cv2.rectangle(image, (int(label["points"][0]*times), int(label["points"][1]*times)),
                           (int(label["points"][2]*times), int(label["points"][3]*times)), color, 2)
         self.show_action()
@@ -348,6 +358,21 @@ class SignLabel:
                     print('=================================================================')
                     object = label_list.pop(6)
                     print('[delete] ...index: 7; label: %s' % object)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
+                if k == ord('*'):
+                    print('=================================================================')
+                    object = label_list.pop(7)
+                    print('[delete] ...index: 8; label: %s' % object)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
+                if k == ord('('):
+                    print('=================================================================')
+                    object = label_list.pop(8)
+                    print('[delete] ...index: 9; label: %s' % object)
+                    self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
+                if k == ord(')'):
+                    print('=================================================================')
+                    object = label_list.pop(9)
+                    print('[delete] ...index: 10; label: %s' % object)
                     self.draw_image = self.draw_rectangle(image.copy(), label_list, times)
 
             except Exception:
