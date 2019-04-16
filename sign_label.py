@@ -1,6 +1,7 @@
 # coding=utf-8
 import cv2
 import os
+import ast
 import time
 import shutil
 import subprocess
@@ -378,7 +379,7 @@ def parse_argvs():
     parser.add_argument("--sign_type", dest="sign_type", type=str, default="things",
                         choices=["things", "flag", "ocr", "face"])
     parser.add_argument("--root_path", dest="root_path", type=str, default="../Data/AI比赛/特定物品识别/images_100/")
-    parser.add_argument("--process_all", dest="process_all", type=bool, default=False)
+    parser.add_argument("--process_all", dest="process_all", type=ast.literal_eval, default=False, choices=[True, False])
     args = parser.parse_args()
     print(args)
     # logger.warning(args)
