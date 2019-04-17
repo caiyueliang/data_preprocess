@@ -136,14 +136,14 @@ class SignLabel:
             a = 765 / len(self.class_list)
             b = int(label["class"]) / 3
             c = int(label["class"]) % 3
-            print(a, b, c)
+            # print(a, b, c)
             if c == 0:
                 color = (255 - a * b, a * b, a * b)
             elif c == 1:
                 color = (255 - a * (b+1), 255 - a * b, a * b)
             else:
                 color = (255 - a * (b+1), 255 - a * (b+1), 255 - a * b)
-            print(color)
+            # print(color)
             # if a <= 255:
             #     color = (a, 0, 0)
             # elif a <= 510:
