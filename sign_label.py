@@ -132,7 +132,7 @@ class SignLabel:
     def draw_rectangle(self, image, label_list, times=1):
         print('本张图所有标记信息：')
         for index, label in enumerate(label_list):
-            print('index: %d 详细信息: %s' % (index + 1, label))
+            print('index: %d 详细信息: %s， %s' % (index + 1, label, self.class_list[int(label["class"])]))
             a = 765 / len(self.class_list)
             b = int(label["class"]) / 3
             c = int(label["class"]) % 3
@@ -179,7 +179,7 @@ class SignLabel:
 
     def show_action(self):
         print('=================================================================')
-        print('[Enter] 输入文件执行对应操作： s: 保存图片  q: 下一张图片  d: 删除图片')
+        print('[Enter] 输入文件执行对应操作： s: 保存图片  q: 下一张图片  d: 删除图片 c: 缩放图片')
         print('[Enter] 如果要删除该图片中的某个标记框，用： shift + 数字（如 shift + 1表示删除第0个框）')
 
     def sign_image(self, image_file, label_file):
