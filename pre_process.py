@@ -142,6 +142,7 @@ def parse_argvs():
     parser.add_argument("--func", dest="func", type=int, default=0)
     parser.add_argument("--root_path", dest="root_path", type=str, default="../Data/AI比赛/特定物品识别/images/")
     parser.add_argument("--output_path", dest="output_path", type=str, default="../Data/AI比赛/特定物品识别/images_100/")
+    parser.add_argument("--count", dest="count", type=int, default=20)
     parser.add_argument("--start_count", dest="start_count", type=int, default=0)
     parser.add_argument("--end_count", dest="end_count", type=int, default=100)
     args = parser.parse_args()
