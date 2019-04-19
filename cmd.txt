@@ -9,6 +9,8 @@ python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/
 
 ===========================================================================================================================
 数据标记
+python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/砧板" --process_all True
+
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/" --process_all False
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/厨师帽" --process_all True
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/厨师帽" --process_all False
