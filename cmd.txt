@@ -25,6 +25,8 @@ python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定�
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/炒锅" --process_all True
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_100/电冰箱" --process_all True
 
+python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/空调" --process_all True
+
 python sign_label.py --sign_type="flag" --root_path="../Data/AI比赛/国旗识别/images_100/"
 
 ===========================================================================================================================
