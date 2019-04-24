@@ -6,6 +6,7 @@ python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/
 python pre_process.py --func=2 --root_path="../Data/AI比赛/国旗识别/images/" --output_path="../Data/AI比赛/国旗识别/images_100/" --start_count=0 --end_count=100
 
 python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/images/" --output_path="../Data/AI比赛/特定物品识别/images_300_500/" --start_count=300 --end_count=500
+python pre_process.py --func=2 --root_path="../Data/AI比赛/特定物品识别/images/" --output_path="../Data/AI比赛/特定物品识别/images_500_1000/" --start_count=500 --end_count=1000
 
 ===========================================================================================================================
 数据标记
