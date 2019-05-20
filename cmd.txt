@@ -32,11 +32,12 @@ python sign_label.py --sign_type="flag" --root_path="../Data/AI比赛/国旗识�
 
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_300_500/电视机" --process_all True
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_300_500/电冰箱" --process_all True
+python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_300_500/厨师服" --process_all True
 python sign_label.py --sign_type="things" --root_path="../Data/AI比赛/特定物品识别/images_500_1000/椅子" --process_all True
 
 ===========================================================================================================================
 拆分成训练集和测试集
-python pre_process.py --func=1 --root_path="../Data/AI比赛/特定物品识别/images_100/" --output_path="../Data/AI比赛/特定物品识别/images_train/" --count=40
+python pre_process.py --func=1 --root_path="../Data/AI比赛/特定物品识别/images_100/" --output_path="../Data/AI比赛/特定物品识别/images_train/" --count=50
 
 ===========================================================================================================================
 生成image_path.txt
