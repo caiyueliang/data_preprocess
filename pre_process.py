@@ -20,11 +20,34 @@ def write_data(file_name, data, flag):
         f.write(data)
 
 
+def image_to_text(file):
+    return file.replace('.jpg', '.txt').replace('.jpeg', '.txt').replace('.png', '.txt').replace('.bmp', '.txt')
+
+
 def is_image(file_path):
     if '.jpg' in file_path or '.jpeg' in file_path or '.png' in file_path or '.bmp' in file_path:
         return True
     else:
         return False
+
+
+def assert_label(file_path):
+    if '.txt' in file_path:
+        with open(file_path, 'r') as file:
+            label_list_str = file.readlines()
+
+        for label in label_list_str:
+            temp_list = label.rstrip().split(' ')
+            if float(temp_list[1]) < 0 or float(temp_list[1]) > 1:
+                return False
+            if float(temp_list[2]) < 0 or float(temp_list[2]) > 1:
+                return False
+            if float(temp_list[3]) < 0 or float(temp_list[3]) > 1:
+                return False
+            if float(temp_list[4]) < 0 or float(temp_list[4]) > 1:
+                return False
+        return True
+    return False
 
 
 # ============================================================================================================
@@ -47,7 +70,7 @@ def data_pre_process_1(root_path, output_path, count):
                 mkdir_if_not_exist(os.path.join(output_path, 'test', dir_path))
 
                 file_path = os.path.join(root, file)
-                print(file_path)
+                # print(file_path)
                 if i < count:
                     test_path = os.path.join(output_path, 'test', dir_path)
                     shutil.copy(file_path, test_path)
@@ -82,8 +105,10 @@ def update_image_path(root_path, label_file):
         for root, dirs, files in os.walk(os.path.join(root_path, dir)):
             for file in files:
                 if is_image(file):
-                    print(file)
-                    write_data(os.path.join(root_path, label_file), dir + os.sep + file + '\n', "a+")
+                    if assert_label(os.path.join(root, image_to_text(file))):
+                        write_data(os.path.join(root_path, label_file), dir + os.sep + file + '\n', "a+")
+                    else:
+                        print("[update_image_path] txt error: ", os.path.join(root, image_to_text(file)))
 
 
 # 每个类别里提取n张图片放到一个文件夹里

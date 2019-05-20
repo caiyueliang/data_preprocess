@@ -391,8 +391,7 @@ class SignLabel:
 
                     # 只处理未处理过的
                     label_name = file.replace('.jpg', '.txt').replace('.jpeg', '.txt').replace('.png', '.txt')
-                    if os.path.exists(os.path.join(root, label_name)) \
-                            and process_all is False:
+                    if os.path.exists(os.path.join(root, label_name)) and process_all is False:
                         process_flag = False
 
                     if process_flag is True:
